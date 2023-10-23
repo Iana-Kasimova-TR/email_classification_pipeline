@@ -42,7 +42,7 @@ Email Text Classification
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <form method="POST">
+                    <form id='emailForm' method="POST">
                         <!-- Input block-->
                         <div class="form-group">
                             <label for="translation">
@@ -51,7 +51,7 @@ Email Text Classification
                                 </blockquote>
                             </label>
                             <textarea class="form-control" name="email_text" rows="5"
-                                placeholder="email text"></textarea>
+                                placeholder="email text">{{email_text}}</textarea>
                         </div>
 
                         <!-- Select output language here. -->
@@ -60,6 +60,8 @@ Email Text Classification
                         <button type="submit" class="btn btn-primary mb-2">Predict</button></br>
                         </br>
                     </form>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
                     <!-- Translated text returned by the Translate API is rendered here. -->
                 </div>
                 <div class="col">

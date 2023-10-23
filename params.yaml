@@ -29,6 +29,5 @@ model_dir: models/fasttext_model
 
 model_webapp_dir: webapp/model_webapp_dir/fasttext_model
 
-model_monitor:
-  target_col_name: target
-  monitor_dashboard_html: reports/data_and_target_drift_dashboard.html
+model_monitoring:
+  monitor_dashboard_path: reports/data_and_target_drift_dashboard.html
