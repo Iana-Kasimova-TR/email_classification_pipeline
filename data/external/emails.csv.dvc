@@ -1,0 +1,5 @@
+outs:
+- md5: dc030de2dec828ec7e89adfa8d56927a
+  size: 99463046
+  hash: md5
+  path: emails.csv

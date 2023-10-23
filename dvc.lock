@@ -1,0 +1,71 @@
+schema: '2.0'
+stages:
+  split_data:
+    cmd: python src/split_data.py --config=params.yaml
+    deps:
+    - path: data/external/emails.csv
+      hash: md5
+      md5: dc030de2dec828ec7e89adfa8d56927a
+      size: 99463046
+    - path: src/split_data.py
+      hash: md5
+      md5: 0f1c21e9df9fd44adf2df431485e8d6b
+      size: 1837
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 738c31f2d40892cbb1c7539c5c474d14
+      size: 19982620
+    - path: data/processed/train.csv
+      hash: md5
+      md5: f48c7481ecfbb1bffcbe89039626e024
+      size: 79480206
+  preprocess_train_data:
+    cmd: python src/preprocess_data.py --config=params.yaml
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: f48c7481ecfbb1bffcbe89039626e024
+      size: 79480206
+    - path: src/preprocess_data.py
+      hash: md5
+      md5: 0d500855aacbeaafcdda47d28c9f1ab9
+      size: 923
+    outs:
+    - path: data/processed/train.txt
+      hash: md5
+      md5: a8cd46161973c2638aa5c6d92ad03413
+      size: 79828941
+  model_train:
+    cmd: python src/train.py --config=params.yaml
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 738c31f2d40892cbb1c7539c5c474d14
+      size: 19982620
+    - path: data/processed/train.txt
+      hash: md5
+      md5: a8cd46161973c2638aa5c6d92ad03413
+      size: 79828941
+    - path: src/train.py
+      hash: md5
+      md5: 521bf3c67c604a984f9a79468a9ee5cd
+      size: 4060
+    params:
+      params.yaml:
+        fasttext.epoch: 10
+  log_production_model:
+    cmd: python src/model_selection.py --config=params.yaml
+    deps:
+    - path: src/model_selection.py
+      hash: md5
+      md5: 0140bf4019c3671b4e0de39b992f6d3a
+      size: 1866
+    params:
+      params.yaml:
+        fasttext.epoch: 10
+    outs:
+    - path: models/fasttext_model
+      hash: md5
+      md5: 0f44a49caa0552aa4af63c5d7829c3cd
+      size: 17436572

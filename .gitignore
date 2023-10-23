@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+.DS_Store
+.history/
+.vscode/
+
+#mlflow
+mlartifacts/
+mlruns/
 # C extensions
 *.so
 
@@ -12,6 +19,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+data/processed/
 eggs/
 .eggs/
 lib/
@@ -55,22 +63,10 @@ cover/
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
 
 # Flask stuff:
 instance/
 .webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -99,7 +95,7 @@ ipython_config.py
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
 #   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
+poetry.lock
 
 # pdm
 #   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.

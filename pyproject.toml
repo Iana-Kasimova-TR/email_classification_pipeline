@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "email-classification-pipeline"
+version = "0.1.0"
+description = ""
+authors = ["Iana Kasimova <Iana_Kasimova@epam.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+dvc = "^3.27.0"
+pytest = "^7.4.2"
+mlflow = "^2.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

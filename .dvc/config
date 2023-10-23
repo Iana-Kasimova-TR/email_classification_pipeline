@@ -1,0 +1,6 @@
+[core]
+    remote = email_remote
+['remote "data_remote"']
+    url = ../data
+['remote "email_remote"']
+    url = /tmp/data
