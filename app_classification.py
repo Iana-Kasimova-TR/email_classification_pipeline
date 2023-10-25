@@ -1,30 +1,26 @@
-import logging
 import os
 
 import fasttext
-import joblib
-import numpy as np
-import yaml
-from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask import Flask, jsonify, render_template, request
 
-import src.db_handler as db_handler
-import src.log_config as log_config
-from src.load_parameters import read_params
+import src.database.db_handler as db_handler
+import src.utils.log_config as log_config
+from src.utils.load_parameters import read_params
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-webapp_root = "webapp"
-params_path = "params.yaml"
+webapp_root = os.getenv("APP_ROOT", "webapp")
+params_path = os.getenv("PARAMS_PATH", "params/params.yaml")
 
 static_dir = os.path.join(webapp_root, "static")
 template_dir = os.path.join(webapp_root, "templates")
 
 app = Flask(__name__, static_folder=static_dir, template_folder=template_dir)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "email.db")
+db_uri = os.getenv("SQLALCHEMY_DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
 
 db_handler.init_db(app)
-
 log_config.setup_logging(app)
+
+health_status = True
 
 
 class NotEmpty(Exception):
@@ -71,6 +67,31 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/health", methods=["GET"])
+def health():
+    if health_status:
+        resp = jsonify(health="healthy")
+        resp.status_code = 200
+    else:
+        resp = jsonify(health="unhealthy")
+        resp.status_code = 500   
+    return resp
+
+
+@app.route("/model_version", methods=["GET"])
+def get_model_version():
+    try:
+        model_name = os.getenv("YOUR_MODEL_NAME")
+        model_version = os.getenv("YOUR_MODEL_VERSION")
+        resp = jsonify(model_name=model_name, model_version=model_version)
+        resp.status_code = 200
+        app.logger.info(f"model version: {model_version}")
+        return resp
+    except Exception as e:
+        error = {"error": e}
+        return render_template("error.html", error=error)
+
+
 @app.route("/", methods=["POST"])
 def index():
     try:
@@ -83,7 +104,7 @@ def index():
             )
     except Exception as e:
         error = {"error": e}
-        return render_template("404.html", error=error)
+        return render_template("error.html", error=error)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.9.13
+- pip<=22.0.4
+- pip:
+  - mlflow==2.7.1
+  - cloudpickle==2.2.1
+  - fasttext-wheel==0.9.2
+  - numpy==1.25.2
+  - fasttext
+name: mlflow-env

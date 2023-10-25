@@ -1,16 +1,16 @@
 schema: '2.0'
 stages:
   split_data:
-    cmd: python src/split_data.py --config=params.yaml
+    cmd: python src/model/split_data.py --config=params/params.yaml
     deps:
     - path: data/external/emails.csv
       hash: md5
       md5: dc030de2dec828ec7e89adfa8d56927a
       size: 99463046
-    - path: src/split_data.py
+    - path: src/model/split_data.py
       hash: md5
-      md5: 0f1c21e9df9fd44adf2df431485e8d6b
-      size: 1837
+      md5: 027567403db3846d7e3d6d4ec53a97a5
+      size: 1898
     outs:
     - path: data/processed/test.csv
       hash: md5
@@ -21,23 +21,23 @@ stages:
       md5: f48c7481ecfbb1bffcbe89039626e024
       size: 79480206
   preprocess_train_data:
-    cmd: python src/preprocess_data.py --config=params.yaml
+    cmd: python src/model/preprocess_data.py --config=params/params.yaml
     deps:
     - path: data/processed/train.csv
       hash: md5
       md5: f48c7481ecfbb1bffcbe89039626e024
       size: 79480206
-    - path: src/preprocess_data.py
+    - path: src/model/preprocess_data.py
       hash: md5
-      md5: 0d500855aacbeaafcdda47d28c9f1ab9
-      size: 923
+      md5: c276a0cbdfe9e7d8b6447a2872daff32
+      size: 995
     outs:
     - path: data/processed/train.txt
       hash: md5
       md5: a8cd46161973c2638aa5c6d92ad03413
       size: 79828941
   model_train:
-    cmd: python src/train.py --config=params.yaml
+    cmd: python src/model/train.py --config=params/params.yaml
     deps:
     - path: data/processed/test.csv
       hash: md5
@@ -47,25 +47,25 @@ stages:
       hash: md5
       md5: a8cd46161973c2638aa5c6d92ad03413
       size: 79828941
-    - path: src/train.py
+    - path: src/model/train.py
       hash: md5
-      md5: 521bf3c67c604a984f9a79468a9ee5cd
-      size: 4060
+      md5: bc21761cf6f0e87e0890ebb1b18c914d
+      size: 4118
     params:
       params.yaml:
         fasttext.epoch: 10
   log_production_model:
-    cmd: python src/model_selection.py --config=params.yaml
+    cmd: python src/model/model_selection.py --config=params/params.yaml
     deps:
-    - path: src/model_selection.py
+    - path: src/model/model_selection.py
       hash: md5
-      md5: 0140bf4019c3671b4e0de39b992f6d3a
-      size: 1866
+      md5: da35f103490b4096736438eb7ba30454
+      size: 1937
     params:
       params.yaml:
         fasttext.epoch: 10
     outs:
     - path: models/fasttext_model
       hash: md5
-      md5: 0f44a49caa0552aa4af63c5d7829c3cd
+      md5: cdf28a8ebf4b3343bdcd29fb713038d0
       size: 17436572

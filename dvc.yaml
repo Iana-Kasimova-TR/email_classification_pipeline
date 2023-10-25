@@ -1,34 +1,34 @@
 stages:
   split_data:
-    cmd: python src/split_data.py --config=params.yaml
+    cmd: python src/model/split_data.py --config=params/params.yaml
     deps:
-      - src/split_data.py
+      - src/model/split_data.py
       - data/external/emails.csv
     outs:
       - data/processed/train.csv
       - data/processed/test.csv
 
   preprocess_train_data:
-    cmd: python src/preprocess_data.py --config=params.yaml
+    cmd: python src/model/preprocess_data.py --config=params/params.yaml
     deps:
-      - src/preprocess_data.py
+      - src/model/preprocess_data.py
       - data/processed/train.csv
     outs:
       - data/processed/train.txt
 
   model_train:
-    cmd: python src/train.py --config=params.yaml
+    cmd: python src/model/train.py --config=params/params.yaml
     deps:
+      - src/model/train.py
       - data/processed/train.txt
       - data/processed/test.csv
-      - src/train.py
     params:
       - fasttext.epoch
 
   log_production_model:
-    cmd: python src/model_selection.py --config=params.yaml
+    cmd: python src/model/model_selection.py --config=params/params.yaml
     deps:
-      - src/model_selection.py
+      - src/model/model_selection.py
     params:
       - fasttext.epoch
     outs:

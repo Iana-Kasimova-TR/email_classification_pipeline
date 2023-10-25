@@ -1,0 +1,33 @@
+external_data_config:
+  external_data_csv: data/external/emails.csv
+
+split_data_config:
+  model_var: ["product", "narrative"]
+  train_test_split_ratio: 0.2
+  target: product
+  random_state: 111
+  feature: ["narrative"]
+  train_data_csv: data/processed/train.csv
+  test_data_csv: data/processed/test.csv
+
+preprocess_data_config:
+  path_to_csv: data/processed/train.csv
+  output_txt: data/processed/train.txt
+
+mlflow_config:
+  artifacts_dir: artifacts
+  experiment_name: model_iteration1
+  run_name: fasttext
+  registered_model_name: fasttext_model
+  remote_server_uri: http://127.0.0.1:5000
+  pip_requirements: ["fasttext"]
+
+fasttext:
+  epoch: 10
+
+model_dir: models/fasttext_model
+
+model_webapp_dir: webapp/model_webapp_dir/artifacts/fasttext_model
+
+model_monitoring:
+  monitor_dashboard_path: reports/data_and_target_drift_dashboard.html
